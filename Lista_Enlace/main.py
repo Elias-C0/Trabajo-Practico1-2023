@@ -1,5 +1,8 @@
-from listadoble import ListaDoblementeEnlazada
+from listadoble import ListaDobleEnlazada
 
-aux= ListaDoblementeEnlazada()
+aux= ListaDobleEnlazada()
 
-aux.esta_vacia()
+aux.agregar_al_inicio(30)
+
+a=aux.copiar()
+

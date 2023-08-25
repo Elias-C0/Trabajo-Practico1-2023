@@ -9,7 +9,7 @@ class ListaDobleEnlazada:
     def __init__(self):
         self.cabeza = None
         self.cola = None
-        self.tamanio= 0
+        self.tamano= 0
 
     def esta_vacia(self):
         return self.cabeza == None
@@ -20,33 +20,28 @@ class ListaDobleEnlazada:
         else:
             aux = Nodo(dato)
             aux.siguiente = self.cabeza
-            self.cabeza.anterior = None
+            self.cabeza.anterior = aux
             self.cabeza = aux
-        self.tamanio += 1
+        self.tamano += 1
 
     def agregar_al_final(self,dato):
         if self.esta_vacia():
             self.cabeza = self.cola = Nodo(dato)
         else:
-            aux=self.cola
+            aux= self.cola
             self.cola = aux.siguiente = Nodo(dato)
             self.cola.anterior= aux
-        self.tamanio += 1
+        self.tamano += 1
 
-    def insertar(self,dato,posicion):
-        
+    #REVISAR
+    def insertar(self,dato,posicion=None):
         if self.esta_vacia():
             self.cabeza = self.cola = Nodo(dato)
-        elif posicion < 0 or posicion > self.tamanio:
+        elif posicion < 0 or posicion > self.tamano:
             raise ValueError("FUERA DE RANGO")
-        else:
-            pass
-        if posicion == 0:
-            self.agregar_al_inicio(dato)
-        elif posicion == self.tamanio:
+        elif posicion == self.tamano:
             self.agregar_al_final(dato)
-
-
+        self.tamano +=1
 
     def iterar_inicio(self):
         aux= self.cabeza
@@ -61,13 +56,14 @@ class ListaDobleEnlazada:
             aux = aux.anterior
 
     def tamanio(self):
-        return self.tamanio
+        return self.tamano
     
+    #Funciona, pero si queres imprimirlo no se imprime correctamente, no se si deberia ser asi.
     def copiar(self):
         copia_lista = ListaDobleEnlazada()
         actual = self.cabeza
-        while actual:
-            copia_lista.agregar(actual.dato)
+        while actual != None:
+            copia_lista.agregar_al_final(actual.dato)
             actual = actual.siguiente
         return copia_lista
     
