@@ -43,22 +43,15 @@ class ListaDobleEnlazada:
             self.agregar_al_final(dato)
         self.tamano +=1
 
-    def iterar_inicio(self):
-        aux= self.cabeza
-        while aux != None:
-            print(aux.dato)
-            aux= aux.siguiente
-    
-    def iterar_final(self):
-        aux= self.cola
+    def __iter__(self):
+        aux = self.cabeza
         while aux:
-            print(aux.dato)
-            aux = aux.anterior
+            yield(aux.dato)
+            aux = aux.siguiente
 
-    def tamanio(self):
+    def __len__(self):
         return self.tamano
     
-    #Funciona, pero si queres imprimirlo no se imprime correctamente, no se si deberia ser asi.
     def copiar(self):
         copia_lista = ListaDobleEnlazada()
         actual = self.cabeza
