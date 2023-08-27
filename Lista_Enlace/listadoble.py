@@ -9,7 +9,7 @@ class ListaDobleEnlazada:
     def __init__(self):
         self.cabeza = None
         self.cola = None
-        self.tamano= 0
+        self.tamanio= 0
 
     def esta_vacia(self):
         return self.cabeza == None
@@ -22,7 +22,7 @@ class ListaDobleEnlazada:
             aux.siguiente = self.cabeza
             self.cabeza.anterior = aux
             self.cabeza = aux
-        self.tamano += 1
+        self.tamanio += 1
 
     def agregar_al_final(self,dato):
         if self.esta_vacia():
@@ -31,17 +31,36 @@ class ListaDobleEnlazada:
             aux= self.cola
             self.cola = aux.siguiente = Nodo(dato)
             self.cola.anterior= aux
-        self.tamano += 1
+        self.tamanio += 1
 
-    #REVISAR
     def insertar(self,dato,posicion=None):
-        if self.esta_vacia():
-            self.cabeza = self.cola = Nodo(dato)
-        elif posicion < 0 or posicion > self.tamano:
-            raise ValueError("FUERA DE RANGO")
-        elif posicion == self.tamano:
-            self.agregar_al_final(dato)
-        self.tamano +=1
+        nodo_nuevo= Nodo(dato)
+        if self.esta_vacia(): #en caso que la lista este vacia
+            self.cabeza = self.cola = nodo_nuevo
+        
+        elif posicion is None or posicion == self.tamanio: #el dato se inserta al final
+            self.cola.siguiente = nodo_nuevo
+            nodo_nuevo.anterior = self.cola
+            self.cola = nodo_nuevo
+
+        elif posicion == 0: # el dato se inserta al principio
+            nodo_nuevo.siguiente = self.cabeza
+            self.cabeza.anterior = nodo_nuevo
+            self.cabeza = nodo_nuevo
+
+        elif posicion > 0 and posicion < self.tamanio:
+            actual = self.cabeza
+            for x in range(posicion):
+                actual= actual.siguiente
+            after= actual.anterior
+            after.siguiente = nodo_nuevo
+            nodo_nuevo.anterior = after
+            nodo_nuevo.siguiente = actual
+            actual.anterior = nodo_nuevo
+
+        else:
+             raise ValueError("FUERA DE RANGO")
+        self.tamanio +=1
 
     def __iter__(self):
         aux = self.cabeza
@@ -50,7 +69,7 @@ class ListaDobleEnlazada:
             aux = aux.siguiente
 
     def __len__(self):
-        return self.tamano
+        return self.tamanio
     
     def copiar(self):
         copia_lista = ListaDobleEnlazada()
