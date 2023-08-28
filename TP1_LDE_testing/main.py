@@ -14,6 +14,9 @@ class ListaDobleEnlazada:
     def esta_vacia(self):
         return self.cabeza == None
 
+    def __len__(self):
+        return self.tamanio
+
     def agregar_al_inicio(self,dato):
         if self.esta_vacia():
             self.cabeza = self.cola = Nodo(dato)
@@ -62,15 +65,40 @@ class ListaDobleEnlazada:
              raise ValueError("FUERA DE RANGO")
         self.tamanio +=1
 
-    def __iter__(self):
-        aux = self.cabeza
-        while aux:
-            yield(aux.dato)
-            aux = aux.siguiente
+    def extraer(self,posicion=None):
+        if posicion == None: #Se elimina el ultimo elemento de la lista
+            actual = self.cola
+            aux= actual.anterior
+            aux.siguiente= None
+            self.cola = aux
+        
+        elif posicion == 0:
+            actual = self.cabeza
+            aux= actual.siguiente
+            self.cabeza= aux
+            self.cabeza.anterior= None
 
-    def __len__(self):
-        return self.tamanio
-    
+        elif posicion == -1 or posicion == self.tamanio - 1:
+            actual = self.cola
+            aux= actual.anterior
+            self.cola = aux
+            aux.siguiente = None
+
+        elif 0 < posicion < self.tamanio: #Se elimina en una posicion especifica
+            actual = self.cabeza
+            for x in range(posicion):
+                actual= actual.siguiente
+            after= actual.anterior
+            sig= actual.siguiente
+            after.siguiente = sig
+            sig.anterior = after
+
+        else: 
+            raise ValueError("LISTA VACIA")
+        
+        self.tamanio -=1
+        return actual.dato
+
     def copiar(self):
         copia_lista = ListaDobleEnlazada()
         actual = self.cabeza
@@ -79,3 +107,18 @@ class ListaDobleEnlazada:
             actual = actual.siguiente
         return copia_lista
     
+    def invertir(self):
+        pass
+
+
+    def ordenar(self):
+        pass
+
+    def concatenar(self,lista):
+        pass
+
+    def __iter__(self):
+        aux = self.cabeza
+        while aux:
+            yield(aux.dato)
+            aux = aux.siguiente
