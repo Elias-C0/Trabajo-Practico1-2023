@@ -108,13 +108,12 @@ class ListaDobleEnlazada:
         return copia_lista
     
     def invertir(self):
-        nodo_actual = self.cabeza
-        while nodo_actual:
-            aux = nodo_actual.anterior
-            nodo_actual.anterior = nodo_actual.siguiente
-            nodo_actual.siguiente = aux
-            nodo_actual = nodo_actual.anterior
-        self.cabeza, self.cola = self.cola, self.cabeza
+        final= self.cola
+        comienzo= self.cabeza
+        while comienzo != final and comienzo.anterior != final:
+            comienzo.dato,final.dato = final.dato, comienzo.dato
+            final= final.anterior
+            comienzo= comienzo.siguiente
 
     def ordenar(self):
         pass
