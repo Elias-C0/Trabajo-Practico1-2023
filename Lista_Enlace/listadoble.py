@@ -55,9 +55,9 @@ class ListaDobleEnlazada:
             actual = self.cabeza
             for x in range(posicion):
                 actual= actual.siguiente
-            after= actual.anterior
-            after.siguiente = nodo_nuevo
-            nodo_nuevo.anterior = after
+            antes= actual.anterior
+            antes.siguiente = nodo_nuevo
+            nodo_nuevo.anterior = antes
             nodo_nuevo.siguiente = actual
             actual.anterior = nodo_nuevo
 
@@ -66,36 +66,29 @@ class ListaDobleEnlazada:
         self.tamanio +=1
 
     def extraer(self,posicion=None):
-        if posicion == None: #Se elimina el ultimo elemento de la lista
-            actual = self.cola
-            aux= actual.anterior
-            aux.siguiente= None
-            self.cola = aux
-        
-        elif posicion == 0:
-            actual = self.cabeza
+        if posicion == 0:
+            actual= self.cabeza
             aux= actual.siguiente
-            self.cabeza= aux
+            self.cabeza = aux
             self.cabeza.anterior= None
-
-        elif posicion == -1 or posicion == self.tamanio - 1:
+        
+        elif posicion == -1 or posicion == self.tamanio -1 or posicion == None:
             actual = self.cola
-            aux= actual.anterior
-            self.cola = aux
-            aux.siguiente = None
-
-        elif 0 < posicion < self.tamanio: #Se elimina en una posicion especifica
-            actual = self.cabeza
+            antes= actual.anterior
+            self.cola = antes
+            antes.siguiente= None
+        
+        elif 0 < posicion < self.tamanio:
+            actual= self.cabeza
             for x in range(posicion):
                 actual= actual.siguiente
-            after= actual.anterior
-            sig= actual.siguiente
-            after.siguiente = sig
-            sig.anterior = after
-
-        else: 
-            raise ValueError("LISTA VACIA")
-        
+            antes= actual.anterior
+            despues= actual.siguiente
+            antes.siguiente= despues
+            despues.anterior= antes
+            
+        else:
+            raise ValueError("FUERA DE RANGO")
         self.tamanio -=1
         return actual.dato
 
