@@ -112,6 +112,15 @@ class ListaDobleEnlazada:
         pass
 
     def concatenar(self,lista):
+        copy2= lista.copiar()
+
+        self.cola.siguiente = copy2.cabeza
+        copy2.cabeza.anterior = self.cola
+        self.cola = copy2.cola
+        
+        self.tamanio += len(lista)
+
+    def __add__(self):
         pass
 
     def __iter__(self):
