@@ -120,8 +120,11 @@ class ListaDobleEnlazada:
         
         self.tamanio += len(lista)
 
-    def __add__(self):
-        pass
+        return self #Se retorna la lista concatenada
+
+    def __add__(self,lista):
+        copia= self.copiar()
+        return copia.concatenar(lista)
 
     def __iter__(self):
         aux = self.cabeza
