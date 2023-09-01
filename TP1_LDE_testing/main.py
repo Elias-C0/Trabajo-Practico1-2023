@@ -55,9 +55,9 @@ class ListaDobleEnlazada:
             actual = self.cabeza
             for x in range(posicion):
                 actual= actual.siguiente
-            after= actual.anterior
-            after.siguiente = nodo_nuevo
-            nodo_nuevo.anterior = after
+            antes= actual.anterior
+            antes.siguiente = nodo_nuevo
+            nodo_nuevo.anterior = antes
             nodo_nuevo.siguiente = actual
             actual.anterior = nodo_nuevo
 
@@ -66,36 +66,29 @@ class ListaDobleEnlazada:
         self.tamanio +=1
 
     def extraer(self,posicion=None):
-        if posicion == None: #Se elimina el ultimo elemento de la lista
-            actual = self.cola
-            aux= actual.anterior
-            aux.siguiente= None
-            self.cola = aux
-        
-        elif posicion == 0:
-            actual = self.cabeza
+        if posicion == 0:
+            actual= self.cabeza
             aux= actual.siguiente
-            self.cabeza= aux
+            self.cabeza = aux
             self.cabeza.anterior= None
-
-        elif posicion == -1 or posicion == self.tamanio - 1:
+        
+        elif posicion == -1 or posicion == self.tamanio -1 or posicion == None:
             actual = self.cola
-            aux= actual.anterior
-            self.cola = aux
-            aux.siguiente = None
-
-        elif 0 < posicion < self.tamanio: #Se elimina en una posicion especifica
-            actual = self.cabeza
+            antes= actual.anterior
+            self.cola = antes
+            antes.siguiente= None
+        
+        elif 0 < posicion < self.tamanio:
+            actual= self.cabeza
             for x in range(posicion):
                 actual= actual.siguiente
-            after= actual.anterior
-            sig= actual.siguiente
-            after.siguiente = sig
-            sig.anterior = after
-
-        else: 
-            raise ValueError("LISTA VACIA")
-        
+            antes= actual.anterior
+            despues= actual.siguiente
+            antes.siguiente= despues
+            despues.anterior= antes
+            
+        else:
+            raise ValueError("FUERA DE RANGO")
         self.tamanio -=1
         return actual.dato
 
@@ -108,20 +101,30 @@ class ListaDobleEnlazada:
         return copia_lista
     
     def invertir(self):
-        nodo_actual = self.cabeza
-        while nodo_actual:
-            aux = nodo_actual.anterior
-            nodo_actual.anterior = nodo_actual.siguiente
-            nodo_actual.siguiente = aux
-            nodo_actual = nodo_actual.anterior
-        self.cabeza, self.cola = self.cola, self.cabeza
+        final= self.cola
+        comienzo= self.cabeza
+        while comienzo != final and comienzo.anterior != final:
+            comienzo.dato,final.dato = final.dato, comienzo.dato
+            final= final.anterior
+            comienzo= comienzo.siguiente
 
     def ordenar(self):
         pass
 
     def concatenar(self,lista):
-        lista_copiada = self.copiar(ListaDobleEnlazada)
-        self
+        copy2= lista.copiar()
+
+        self.cola.siguiente = copy2.cabeza
+        copy2.cabeza.anterior = self.cola
+        self.cola = copy2.cola
+        
+        self.tamanio += len(lista)
+
+        return self #Se retorna la lista concatenada
+
+    def __add__(self,lista):
+        copia= self.copiar()
+        return copia.concatenar(lista)
 
     def __iter__(self):
         aux = self.cabeza
