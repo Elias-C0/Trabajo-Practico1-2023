@@ -86,7 +86,7 @@ class ListaDobleEnlazada:
             despues= actual.siguiente
             antes.siguiente= despues
             despues.anterior= antes
-            
+
         else:
             raise ValueError("FUERA DE RANGO")
         self.tamanio -=1
@@ -99,7 +99,7 @@ class ListaDobleEnlazada:
             copia_lista.agregar_al_final(actual.dato)
             actual = actual.siguiente
         return copia_lista
-    
+
     def invertir(self):
         final= self.cola
         comienzo= self.cabeza
@@ -109,7 +109,25 @@ class ListaDobleEnlazada:
             comienzo= comienzo.siguiente
 
     def ordenar(self):
-        pass
+        if self.cabeza is not None and self.cabeza != self.cola:
+            self.ordenacion_auxiliar(0, self.tamanio-1)
+        else:
+            raise IndexError("Lista carente de contenido")
+
+    def ordenacion_auxiliar(self,primero,ultimo):
+        if primero < ultimo:
+            puntoDivision= self.particion(primero,ultimo)
+
+            self.ordenacion_auxiliar(primero, puntoDivision - 1)
+            self.ordenacion_auxiliar(puntoDivision + 1 , ultimo)
+
+    def particion(self,primero,ultimo):
+        if primero == 0 and ultimo == self.tamanio - 1:
+            pivote= self.cabeza
+            nodoIzq= self.cabeza.siguiente
+            nodoDer= self.cola
+        
+        #elif
 
     def concatenar(self,lista):
         copy2= lista.copiar()
@@ -117,7 +135,7 @@ class ListaDobleEnlazada:
         self.cola.siguiente = copy2.cabeza
         copy2.cabeza.anterior = self.cola
         self.cola = copy2.cola
-        
+
         self.tamanio += len(lista)
 
         return self #Se retorna la lista concatenada
@@ -131,4 +149,3 @@ class ListaDobleEnlazada:
         while aux:
             yield(aux.dato)
             aux = aux.siguiente
-    
