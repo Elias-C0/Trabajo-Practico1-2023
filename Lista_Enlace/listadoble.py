@@ -112,7 +112,7 @@ class ListaDobleEnlazada:
         if self.cabeza is not None and self.cabeza != self.cola:
             self.ordenacion_auxiliar(0, self.tamanio-1)
         else:
-            raise IndexError("Lista vacía de contenido")
+            raise IndexError("Lista carente de contenido")
 
     def ordenacion_auxiliar(self,primero,ultimo):
         if primero < ultimo:
@@ -121,29 +121,53 @@ class ListaDobleEnlazada:
             self.ordenacion_auxiliar(puntoDivision + 1 , ultimo)
 
     def particion(self,primero,ultimo):
-        if primero == 0 and ultimo == self.tamanio - 1: #xq va este if??
+        if primero == 0 and ultimo == self.tamanio -1:
             pivote= self.cabeza
             nodoIzq= self.cabeza.siguiente
             nodoDer= self.cola
-            #elif (yo acá haría un While como el ejemplo)
+
+        elif primero >= 0 and ultimo < self.tamanio:
+            medio= (self.tamanio) // 2
+            actual= self.cabeza
+            for x in range(medio):
+                actual= actual.siguiente
+            pivote= actual
+            for x in range(medio, primero):
+                actual= actual.siguiente
+            nodoIzq = actual
+            for x in range(primero, ultimo):
+                actual= actual.siguiente
+            nodoDer = actual
+        
+        nodoIzq = nodoIzq.siguiente
+        nodoDer= nodoDer.anterior
+
         suceso=False
-
+        marcaIzq= primero + 1
+        marcaDer= ultimo
+        
         while not suceso:
-            while nodoIzq <= nodoDer and nodoIzq <= pivote:
-                nodoIzq= nodoIzq + 1
-            while nodoDer >= pivote and nodoDer >= nodoIzq:
-                nodoDer= nodoDer - 1
-            if nodoDer < nodoIzq:
-                suceso=True
-            else:
-                auux= nodoIzq
-                nodoIzq= nodoDer
-                nodoDer= auux
-        temporal= self.cabeza
-        self.cabeza= nodoDer
-        nodoDer= temporal
+            while marcaIzq <= marcaDer and nodoIzq.dato <= pivote.dato:
+                nodoIzq= nodoIzq.siguiente
+                marcaIzq += 1
 
-        return nodoDer
+            while marcaDer >= marcaIzq and nodoDer.dato >= pivote.dato:
+                nodoDer= nodoDer.anterior
+                marcaDer -=1
+
+            if marcaIzq > marcaDer:
+                suceso=True
+
+            else:
+                aux= nodoIzq.dato
+                nodoIzq.dato= nodoDer.dato
+                nodoDer.dato= aux
+                
+        temporal= pivote.dato
+        pivote.dato= nodoDer.dato
+        nodoDer.dato= temporal
+
+        return marcaDer
         
 
     def concatenar(self,lista):
