@@ -112,22 +112,39 @@ class ListaDobleEnlazada:
         if self.cabeza is not None and self.cabeza != self.cola:
             self.ordenacion_auxiliar(0, self.tamanio-1)
         else:
-            raise IndexError("Lista carente de contenido")
+            raise IndexError("Lista vacía de contenido")
 
     def ordenacion_auxiliar(self,primero,ultimo):
         if primero < ultimo:
             puntoDivision= self.particion(primero,ultimo)
-
             self.ordenacion_auxiliar(primero, puntoDivision - 1)
             self.ordenacion_auxiliar(puntoDivision + 1 , ultimo)
 
     def particion(self,primero,ultimo):
-        if primero == 0 and ultimo == self.tamanio - 1:
+        if primero == 0 and ultimo == self.tamanio - 1: #xq va este if??
             pivote= self.cabeza
             nodoIzq= self.cabeza.siguiente
             nodoDer= self.cola
+            #elif (yo acá haría un While como el ejemplo)
+        suceso=False
+
+        while not suceso:
+            while nodoIzq <= nodoDer and nodoIzq <= pivote:
+                nodoIzq= nodoIzq + 1
+            while nodoDer >= pivote and nodoDer >= nodoIzq:
+                nodoDer= nodoDer - 1
+            if nodoDer < nodoIzq:
+                suceso=True
+            else:
+                auux= nodoIzq
+                nodoIzq= nodoDer
+                nodoDer= auux
+        temporal= self.cabeza
+        self.cabeza= nodoDer
+        nodoDer= temporal
+
+        return nodoDer
         
-        #elif
 
     def concatenar(self,lista):
         copy2= lista.copiar()
