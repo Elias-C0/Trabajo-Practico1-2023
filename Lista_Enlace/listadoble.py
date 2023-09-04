@@ -171,6 +171,8 @@ class ListaDobleEnlazada:
         
 
     def concatenar(self,lista):
+        if self.cabeza is None or lista is None:
+            raise ValueError("Una lista esta vacia")
         copy2= lista.copiar()
 
         self.cola.siguiente = copy2.cabeza
