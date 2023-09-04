@@ -62,7 +62,7 @@ class ListaDobleEnlazada:
             actual.anterior = nodo_nuevo
 
         else:
-             raise ValueError("FUERA DE RANGO")
+             raise ValueError("Fuera De Rango")
         self.tamanio +=1
 
     def extraer(self,posicion=None):
@@ -86,7 +86,7 @@ class ListaDobleEnlazada:
             despues= actual.siguiente
             antes.siguiente= despues
             despues.anterior= antes
-            
+
         else:
             raise ValueError("FUERA DE RANGO")
         self.tamanio -=1
@@ -99,7 +99,7 @@ class ListaDobleEnlazada:
             copia_lista.agregar_al_final(actual.dato)
             actual = actual.siguiente
         return copia_lista
-    
+
     def invertir(self):
         final= self.cola
         comienzo= self.cabeza
@@ -109,7 +109,72 @@ class ListaDobleEnlazada:
             comienzo= comienzo.siguiente
 
     def ordenar(self):
-        pass
+        if self.cabeza is not None and self.cabeza != self.cola:
+            self.ordenacion_auxiliar(0, self.tamanio-1)
+        else:
+            raise IndexError("Lista carente de contenido")
+
+    def ordenacion_auxiliar(self,primero,ultimo):
+        if primero < ultimo:
+            puntoDivision= self.particion(primero,ultimo)
+            self.ordenacion_auxiliar(primero, puntoDivision - 1)
+            self.ordenacion_auxiliar(puntoDivision + 1 , ultimo)
+
+    def particion(self,primero,ultimo):
+        if primero == 0 and ultimo == self.tamanio -1:
+            pivote= self.cabeza
+            nodoIzq= self.cabeza.siguiente
+            nodoDer= self.cola
+
+        elif self.tamanio // 2 < primero:
+            pivote = self.cabeza
+            for x in range(primero):
+                pivote= pivote.siguiente
+            nodoIzq = pivote.siguiente
+    
+        else:
+            pivote = self.cola
+            for x in range((self.tamanio - 1) - primero):
+                pivote= pivote.anterior
+            nodoIzq= pivote.siguiente
+        
+        if ultimo > (self.tamanio/2):
+            nodoDer= self.cola
+            for x in range((self.tamanio - 1) - ultimo):
+                nodoDer = nodoDer.anterior
+
+        else:
+            nodoDer= self.cabeza
+            for x in range(ultimo):
+                nodoDer= nodoDer.siguiente
+
+
+        suceso=False
+        marcaIzq= primero + 1
+        marcaDer= ultimo
+        
+        while not suceso:
+            while marcaIzq <= marcaDer and nodoIzq.dato <= pivote.dato:
+                nodoIzq= nodoIzq.siguiente
+                marcaIzq += 1
+
+            while marcaDer >= marcaIzq and nodoDer.dato >= pivote.dato:
+                nodoDer= nodoDer.anterior
+                marcaDer -=1
+
+            if marcaIzq > marcaDer:
+                suceso=True
+
+            else:
+                aux= nodoIzq.dato
+                nodoIzq.dato= nodoDer.dato
+                nodoDer.dato= aux
+                
+        temporal= pivote.dato
+        pivote.dato= nodoDer.dato
+        nodoDer.dato= temporal
+
+        return marcaDer
 
     def concatenar(self,lista):
         copy2= lista.copiar()
@@ -117,7 +182,7 @@ class ListaDobleEnlazada:
         self.cola.siguiente = copy2.cabeza
         copy2.cabeza.anterior = self.cola
         self.cola = copy2.cola
-        
+
         self.tamanio += len(lista)
 
         return self #Se retorna la lista concatenada
@@ -131,3 +196,23 @@ class ListaDobleEnlazada:
         while aux:
             yield(aux.dato)
             aux = aux.siguiente
+    
+    def __str__(self):
+        string = ""
+        nodo = self.cabeza
+        while nodo != None:
+            string += str(nodo.dato)
+            string += " "
+            nodo = nodo.siguiente
+        return string
+
+AUXs= ListaDobleEnlazada()
+
+AUXs.agregar_al_inicio(20)
+AUXs.agregar_al_final(90)
+AUXs.agregar_al_final(40)
+AUXs.agregar_al_final(2)
+
+AUXs.ordenar()
+
+print(AUXs)
