@@ -192,3 +192,12 @@ class ListaDobleEnlazada:
         while aux:
             yield(aux.dato)
             aux = aux.siguiente
+    
+    def __str__(self): #importante para la visualizacion de las cartas en juego de guerra
+        string = ""
+        nodo = self.cabeza
+        while nodo != None:
+            string += str(nodo.dato)
+            string += " "
+            nodo = nodo.siguiente
+        return string
