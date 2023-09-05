@@ -1,105 +1,82 @@
 from listadoble import ListaDobleEnlazada
-from random import shuffle 
+from random import shuffle
 
+valores = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
+palos = ['♠', '♥', '♦', '♣']
 class Carta:
-    valores = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
-    palos = ['♠', '♥', '♦', '♣']
     def __init__(self,valores,palos):
         self.valores = valores
         self.palos = palos
-        #self.visible = False
     
-    def visibilidad(self,visible):    
+    def visibilidad(self,visible): #SE DESCONOCE (por ahora) 
         self.visible = visible
 
     def __str__(self):
         return f"{self.valores}{self.palos}"
 
 class Mazo:
-    def __init__(self):
-        self.cartas = ListaDobleEnlazada()
-        for palos in Carta.palos:
-            for valores in Carta.valores:
-                self.cartas.agregar_al_final(Carta(valores,palos))
-        
+    def __init__(self): #FUNCIONAL (por ahora)
+        self.mesa= ListaDobleEnlazada()
+        self.mazo = ListaDobleEnlazada()
+        for palo in palos:
+            for valor in valores:
+                self.mazo.agregar_al_final(Carta(valor,palo))
+        #print("EL MASO:",self.cartas)
         self.jugador_1= ListaDobleEnlazada()
         self.jugador_2= ListaDobleEnlazada()
 
-    def repartir(self):
-        for x in range(26):
-            carta = self.cartas[x]
-            carta.visibilidad(False)
-            self.jugador_1.agregar_al_final(carta)
+    def repartir(self): #FUNCIONAL
+        for x,i in enumerate(self.mazo):
+            if x >= 26:
+                self.jugador_1.agregar_al_final(i)
+            else:
+                self.jugador_2.agregar_al_final(i)
 
-        for i in range(26,52):
-            carta = self.cartas[i]
-            carta.visibilidad(False)
-            self.jugador_2.agregar_al_final(carta)
+    def barajar(self): #FUNCIONAL
+        cartas_lista = list(self.mazo)
+        shuffle(cartas_lista)
+        self.mazo = ListaDobleEnlazada() #Se le asigna de nuevo la listadoblementeenlazada para que el metodo tenga sus mismas propiedades
+        for carta in cartas_lista:
+            self.mazo.agregar_al_final(carta) #😆
 
-    def barajar(self):
-        shuffle(self.cartas)
+    def poner_abajo(self,carta):
+        self.mazo.agregar_al_final(carta)
 
-    def poner_abajo(self,jugador_ganador):
-        for cartas in self.mesa:
-            cartas.visibilidad = True
-        jugador_ganador.agregar_al_final(cartas)
+    def poner_arriba(self,carta):
+        self.mazo.agregar_al_inicio(carta)
 
-    def poner_arriba(self,jugador_ganador):
-        for cartas in self.mesa:
-            cartas.visibilidad = False
-        jugador_ganador.agregar_al_final(cartas)
+    def extraer_carta(self):
+        carta= self.mazo.extraer()
+        return carta
 
-class JuegoGuerra:
-  
-    def __init__(self,numeroJugadas):
-        self.cantidad_jugadas= numeroJugadas
-        self.mesa= ListaDobleEnlazada()
+class JuegoDeGuerra:
+    def __init__(self,limite_turnos=10000):
+        self.turno= 0
+        self.max_turnos= limite_turnos
 
-    def comenzar_game(self):
-        for turno in range(self.cantidad_jugadas):
-            print("Turno", turno +1)
-            self.realizar_turno()
-
-        if self.ganador():
-            print("HAY UN GANADOR")
+    def game_play(self):
+        pass
         
-        else:
-            print("termina en empate")
-
-    def realizar_turno(self):
-        carta_jugador1= self.jugador_1.extraer()
-        carta_jugador2= self.jugador_2.extraer()
-
-        print(f"Carta jugador 1: {carta_jugador1}")
-        print(f"Carta jugador 2: {carta_jugador2}")
-
-        self.mesa.agregar_al_final(carta_jugador1)
-        self.mesa.agregar_al_final(carta_jugador2)
-
-        if carta_jugador1 > carta_jugador2:
-            self.jugador_1.agregar_al_final(self.mesa)
-            self.mesa = ListaDobleEnlazada()
-            print("Turno ganado por jugador 1")
-        
-        elif carta_jugador2 > carta_jugador1:
-            self.jugador_2.agregar_al_final(self.mesa)
-            self.mesa = ListaDobleEnlazada()
-            print("Turno ganado por jugador 2")
-
-        print("Estado de los mazos y la mesa después del turno:")
-        print(f"Mazo jugador 1: {self.jugador_1}")
-        print(f"Mazo jugador 2: {self.jugador_2}")
-        print(f"Cartas en la mesa: {self.mesa}")
-        
-        # else:
-        #     pass
 
 
-if __name__ == "__main__":
-    numero_jugadas = 10  # Define el número máximo de jugadas
-    juego = JuegoGuerra(numero_jugadas)
 
-    # Configura los mazos y jugadores aquí...
 
-    # Inicia el juego
-    juego.comenzar_game()
+A= Mazo()
+
+A.barajar()
+
+A.repartir()
+
+b= A.mazo
+
+aux= A.jugador_1
+rodrigo= A.jugador_2
+
+print("JUGADOR1",aux)
+print(len(aux))
+
+print("JUGADOR2",rodrigo)
+print(len(rodrigo))
+
+# O=aux.extraer_carta()
+# print(O)
