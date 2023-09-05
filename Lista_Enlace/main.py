@@ -11,6 +11,7 @@ aux.agregar_al_final(-139)
 aux.agregar_al_final(-75)
 aux.agregar_al_final(121)
 aux.agregar_al_final(25)
+aux.agregar_al_inicio(55)
 
 aux.ordenar()
 
