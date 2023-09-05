@@ -1,2 +1,2 @@
-# ayed-tps-codigos-iniciales-para-estudiantes
-Códigos iniciales de TPs para estudiantes.
+# Trabajo Practico Algoritmos y Estructuras de Datos
+Estudiantes: Elias Coradini y Ayrton Milessi
