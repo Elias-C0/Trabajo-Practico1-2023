@@ -226,6 +226,7 @@ class ListaDobleEnlazada:
         plt.xlabel("Tamaño de la lista")
         plt.ylabel("Tiempo de ejecución (segundos)")
         plt.title("Análisis de Rendimiento")
+        plt.grid(True)
         plt.show()
 
     def recorrido(self,n):
