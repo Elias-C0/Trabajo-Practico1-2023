@@ -144,7 +144,7 @@ class ListaDobleEnlazada:
 
         if ultimo > (self.tamanio/2):
             nodoDer= self.cola
-            for x in range((self.tamanio - 1) - ultimo):
+            for x in range(((self.tamanio - 1) - ultimo)):
                 nodoDer = nodoDer.anterior
 
         else:
