@@ -38,10 +38,10 @@ class Mazo:
         jugador_2.poner_arriba(carta)
     return jugador_1, jugador_2
 
-  def poner_arriba(self,carta):
+  def poner_arriba(self, carta):
     self.mazo.agregar_al_inicio(carta)
 
-  def poner_abajo(self,carta):
+  def poner_abajo(self, carta):
     self.mazo.agregar_al_final(carta)
 
   def sacar_arriba(self):
@@ -56,48 +56,43 @@ class JuegoDeGuerra:
     self.mazo= Mazo()
     self.mazo.barajar()
     self.jugador_1, self.jugador_2 = self.mazo.repartir()
+    self.botin= Mazo()
 
+  # def guerra(self):
+  #   pass
+
+    
     print("Jugador 1:", self.jugador_1.mazo)
     print("Jugador 2:", self.jugador_2.mazo)
 
-    #print("Jugador 1:", carta_jugador_1)
     while self.turno < self.max_turnos:
       carta_jugador_1 = self.jugador_1.sacar_arriba()
       carta_jugador_2 = self.jugador_2.sacar_arriba()
 
-      if valores.index(carta_jugador_1.valores) > valores.index(carta_jugador_2.valores):
+      if (valores.index(carta_jugador_1.valores)+2) > (valores.index(carta_jugador_2.valores)+2):
         self.jugador_1.poner_abajo(carta_jugador_1)
         self.jugador_1.poner_abajo(carta_jugador_2)
-      else:
-          self.jugador_2.poner_abajo(carta_jugador_1)
-          self.jugador_2.poner_abajo(carta_jugador_2)
-      #elif valores.index(carta_jugador_1.valores) == valores.index(Carta_jugador_2.valores):
-          #print("-X -X -X -X -X -X")
-          #if valores.index(carta_jugador_1.valores) > valores.index(carta_jugador_2.valores):
-                #self.jugador_1.poner_abajo(carta_jugador_1)
-                #self.jugador_1.poner_abajo(carta_jugador_2)
-          #elif valores.index(carta_jugador_1.valores) < valores.index(carta_jugador_2.valores):
-                #self.jugador_2.poner_abajo(carta_jugador_1)
-                #self.jugador_2.poner_abajo(carta_jugador_2)
-#que pelotudo soy, me dijiste que era con una funcion recursiva jajaajajajaj :(
+        ganador= "Jugador 1"
+
+      elif (valores.index(carta_jugador_1.valores)+2) < (valores.index(carta_jugador_2.valores)+2):
+        self.jugador_2.poner_abajo(carta_jugador_1)
+        self.jugador_2.poner_abajo(carta_jugador_2)
+        ganador= "Jugador 2"
+
+      
       print("-------------------------------------")
-      print(f"Turno:{self.turno}")
-      print("Jugador 1:")
+      print(f"Turno: {self.turno}")
+      for x in range(len(self.jugador_1.mazo)):
+        print("-X", end=" ")
+      print("\n")
+      print(f"                            {carta_jugador_2}    {carta_jugador_1}\n")
 
-      print(self.jugador_1.mazo)
-      print(carta_jugador_1)
+      for x in range(len(self.jugador_2.mazo)):
+        print("-X", end=" ")
 
-            
-      print("Jugador 2:")
-      print(self.jugador_2.mazo)
-      print(carta_jugador_2)
-
-
-
-
-
+      print(f"\nel ganador es {ganador}")
 
       self.turno +=1
 
-juego = JuegoDeGuerra(limite_turnos=10)  # Puedes ajustar el número de turnos
+juego = JuegoDeGuerra()
 juego.game_play()

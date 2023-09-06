@@ -6,7 +6,7 @@ Created on Sun Aug 21 11:23:53 2022
 """
 
 
-from TP1_juego_guerra.modulos.juego_guerra import Mazo,Carta
+from TP1_juego_guerra.modulos.otro_enfoque import Mazo,Carta
 import unittest
 
 
