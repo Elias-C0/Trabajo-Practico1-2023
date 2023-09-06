@@ -1,4 +1,4 @@
-from listadoble import ListaDobleEnlazada
+from Lista_Enlace.listadoble import ListaDobleEnlazada
 from random import shuffle
 
 valores = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
@@ -8,50 +8,46 @@ class Carta:
         self.valores = valores
         self.palos = palos
     
-    def visibilidad(self,visible): #SE DESCONOCE (por ahora) 
-        self.visible = visible
+    # def visibilidad(self,visible): #SE DESCONOCE (por ahora) 
+    #     self.visible = visible
 
     def __str__(self):
         return f"{self.valores}{self.palos}"
     
-    def fuerza(self):
-        valores = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
-        return valores.index(self.valor)  # Devuelve el índice en la lista de valores
-
 class Mazo:
     def __init__(self): #FUNCIONAL (por ahora)
-        self.mesa= ListaDobleEnlazada()
-        self.mazo = ListaDobleEnlazada()
+        self.mazo = ListaDobleEnlazada() #Se le asigna de nuevo la listadoblementeenlazada para que el metodo tenga sus mismas propiedades
+        self.jugador_1= ListaDobleEnlazada()
+        self.jugador_2= ListaDobleEnlazada()
+        
         for palo in palos:
             for valor in valores:
                 self.mazo.agregar_al_final(Carta(valor,palo))
+ 
         #print("EL MASO:",self.cartas)
-        self.jugador_1= ListaDobleEnlazada()
-        self.jugador_2= ListaDobleEnlazada()
+
 
     def repartir(self): #FUNCIONAL
-        for x,i in enumerate(self.mazo):
-            if x >= 26:
-                self.jugador_1.agregar_al_final(i)
+        for x,carta in enumerate(self.mazo):
+            if x % 2 == 0:
+                self.jugador_1.agregar_al_final(carta)
             else:
-                self.jugador_2.agregar_al_final(i)
+                self.jugador_2.agregar_al_final(carta)
 
     def barajar(self): #FUNCIONAL
         cartas_lista = list(self.mazo)
         shuffle(cartas_lista)
-        self.mazo = ListaDobleEnlazada() #Se le asigna de nuevo la listadoblementeenlazada para que el metodo tenga sus mismas propiedades
         for carta in cartas_lista:
             self.mazo.agregar_al_final(carta) #😆
-
-    def poner_abajo(self,carta):
-        self.mazo.agregar_al_final(carta)
 
     def poner_arriba(self,carta):
         self.mazo.agregar_al_inicio(carta)
 
-    # def extraer_carta(self):
-    #     carta= self.mazo.extraer()
-    #     return carta
+    def poner_abajo(self,jugador,carta):
+        self.mazo.agregar_al_final(carta)
+
+    def sacar_arriba(self):
+        return self.mazo.extraer(0)
 
 class JuegoDeGuerra:
     def __init__(self,limite_turnos=10): # es 10000 pero pongo 10 temporalmente
@@ -71,37 +67,32 @@ class JuegoDeGuerra:
             carta_jugador_2= self.mazo.jugador_2.extraer(0)
 
             if valores.index(carta_jugador_1.valores) > valores.index(carta_jugador_2.valores):
-                self.mazo.jugador_1.agregar_al_final(carta_jugador_1)
-                self.mazo.jugador_1.agregar_al_final(carta_jugador_2)
+                self.mazo.poner_abajo(self.mazo.jugador_1, carta_jugador_1)
+                self.mazo.poner_abajo(self.mazo.jugador_1, carta_jugador_2)
             else:
-                self.mazo.jugador_2.agregar_al_final(carta_jugador_1)
-                self.mazo.jugador_2.agregar_al_final(carta_jugador_2)
-            
+                self.mazo.poner_abajo(self.mazo.jugador_2, carta_jugador_1)
+                self.mazo.poner_abajo(self.mazo.jugador_2, carta_jugador_2)
+
             print("-------------------------------------")
             print(f"Turno:{self.turno}")
             print("Jugador 1:")
 
             print(self.mazo.jugador_1)
             print(carta_jugador_1)
-            # if carta_jugador_1.fuerza() > carta_jugador_2.fuerza():
-            #     self.mazo.jugador_1.agregar_al_final(carta_jugador_1)
-            #     self.mazo.jugador_1.agregar_al_final(carta_jugador_2)
+
             
             print("Jugador 2:")
             print(self.mazo.jugador_2)
             print(carta_jugador_2)
 
+            if valores.index(carta_jugador_1.valores) == valores.index(carta_jugador_2.valores):
 
-            # if carta_jugador_1 == carta_jugador_2:
-            #     guerra= "**** Guerra!! ****"
-            #     print(f"{guerra.center(60)}")
+                guerra= "**** Guerra!! ****"
+                print(f"{guerra.center(60)}")
 
 
             self.turno +=1
         
-
-
-
 
 # A= Mazo()
 
