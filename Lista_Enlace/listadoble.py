@@ -213,7 +213,7 @@ class ListaDobleEnlazada:
         return string
     
     def grafico (self,n):
-        tamano=np.logspace(1,n,10)
+        tamano=np.logspace(1,n,50)
         tiempos=[]
         for cant in tamano:
             tiempo_inicial= time.time()
