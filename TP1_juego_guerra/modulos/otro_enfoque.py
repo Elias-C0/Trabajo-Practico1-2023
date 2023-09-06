@@ -15,31 +15,27 @@ class Mazo:
   def __init__(self):
     self.mazo= ListaDobleEnlazada()
 
+  def generar_mazo(self):
     for palo in palos: #Se le agregan las cartas con los valores y palos al mazo
       for valor in valores:
           self.mazo.agregar_al_final(Carta(valor,palo))
 
   def barajar(self):
+    self.generar_mazo()
     cartas_lista = list(self.mazo)
     shuffle(cartas_lista)
-    print(len(self.mazo))
     self.mazo = ListaDobleEnlazada()
-    print(len(self.mazo))
     for carta in cartas_lista:
       self.mazo.agregar_al_final(carta) #😆
 
   def repartir(self):
     jugador_1 = Mazo()
     jugador_2 = Mazo()
-    print("pene",self.mazo)
-    print("pene2",len(self.mazo))
     for x,carta in enumerate(self.mazo):
       if x % 2 == 0:
         jugador_1.poner_arriba(carta)
       else:
         jugador_2.poner_arriba(carta)
-    print("DSADA",len(jugador_1.mazo))
-    print("DS432432ADA",len(jugador_2.mazo))
     return jugador_1, jugador_2
 
   def poner_arriba(self,carta):
@@ -61,15 +57,13 @@ class JuegoDeGuerra:
     self.mazo.barajar()
     self.jugador_1, self.jugador_2 = self.mazo.repartir()
 
-    print(self.jugador_1.mazo)
-    print(len(self.jugador_1.mazo))
+    print("Jugador 1:", self.jugador_1.mazo)
+    print("Jugador 2:", self.jugador_2.mazo)
 
     #print("Jugador 1:", carta_jugador_1)
     while self.turno < self.max_turnos:
       carta_jugador_1 = self.jugador_1.sacar_arriba()
       carta_jugador_2 = self.jugador_2.sacar_arriba()
-
-      print("Jugador 1:", carta_jugador_1)
 
       if valores.index(carta_jugador_1.valores) > valores.index(carta_jugador_2.valores):
         self.jugador_1.poner_abajo(carta_jugador_1)
@@ -77,6 +71,23 @@ class JuegoDeGuerra:
       else:
           self.jugador_2.poner_abajo(carta_jugador_1)
           self.jugador_2.poner_abajo(carta_jugador_2)
+
+      print("-------------------------------------")
+      print(f"Turno:{self.turno}")
+      print("Jugador 1:")
+
+      print(self.jugador_1.mazo)
+      print(carta_jugador_1)
+
+            
+      print("Jugador 2:")
+      print(self.jugador_2.mazo)
+      print(carta_jugador_2)
+
+
+
+
+
 
       self.turno +=1
 
