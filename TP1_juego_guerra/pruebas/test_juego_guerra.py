@@ -6,7 +6,7 @@ Created on Sun Aug 21 11:23:53 2022
 """
 
 
-from modulos.juego_guerra import JuegoGuerra
+from TP1_juego_guerra.modulos.juego_guerra import Mazo,Carta
 import unittest
 
 
