@@ -13,6 +13,10 @@ class Carta:
 
     def __str__(self):
         return f"{self.valores}{self.palos}"
+    
+    def fuerza(self):
+        valores = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+        return valores.index(self.valor)  # Devuelve el índice en la lista de valores
 
 class Mazo:
     def __init__(self): #FUNCIONAL (por ahora)
@@ -45,38 +49,81 @@ class Mazo:
     def poner_arriba(self,carta):
         self.mazo.agregar_al_inicio(carta)
 
-    def extraer_carta(self):
-        carta= self.mazo.extraer()
-        return carta
+    # def extraer_carta(self):
+    #     carta= self.mazo.extraer()
+    #     return carta
 
 class JuegoDeGuerra:
-    def __init__(self,limite_turnos=10000):
-        self.turno= 0
+    def __init__(self,limite_turnos=10): # es 10000 pero pongo 10 temporalmente
+        self.turno= 1
         self.max_turnos= limite_turnos
 
     def game_play(self):
-        pass
+        self.mazo = Mazo()
+        self.mazo.barajar()
+        self.mazo.repartir()
+
+        print("Jugador 1:",self.mazo.jugador_1)
+        print("Jugador 2:",self.mazo.jugador_2)
+
+        while self.turno < self.max_turnos:
+            carta_jugador_1= self.mazo.jugador_1.extraer(0)
+            carta_jugador_2= self.mazo.jugador_2.extraer(0)
+
+            if valores.index(carta_jugador_1.valores) > valores.index(carta_jugador_2.valores):
+                self.mazo.jugador_1.agregar_al_final(carta_jugador_1)
+                self.mazo.jugador_1.agregar_al_final(carta_jugador_2)
+            else:
+                self.mazo.jugador_2.agregar_al_final(carta_jugador_1)
+                self.mazo.jugador_2.agregar_al_final(carta_jugador_2)
+            
+            print("-------------------------------------")
+            print(f"Turno:{self.turno}")
+            print("Jugador 1:")
+
+            print(self.mazo.jugador_1)
+            print(carta_jugador_1)
+            # if carta_jugador_1.fuerza() > carta_jugador_2.fuerza():
+            #     self.mazo.jugador_1.agregar_al_final(carta_jugador_1)
+            #     self.mazo.jugador_1.agregar_al_final(carta_jugador_2)
+            
+            print("Jugador 2:")
+            print(self.mazo.jugador_2)
+            print(carta_jugador_2)
+
+
+            # if carta_jugador_1 == carta_jugador_2:
+            #     guerra= "**** Guerra!! ****"
+            #     print(f"{guerra.center(60)}")
+
+
+            self.turno +=1
         
 
 
 
 
-A= Mazo()
+# A= Mazo()
 
-A.barajar()
+# A.barajar()
 
-A.repartir()
+# A.repartir()
 
-b= A.mazo
+# b= A.mazo
 
-aux= A.jugador_1
-rodrigo= A.jugador_2
+# aux= A.jugador_1
+# rodrigo= A.jugador_2
 
-print("JUGADOR1",aux)
-print(len(aux))
+# print("JUGADOR1",aux)
+# print(len(aux))
 
-print("JUGADOR2",rodrigo)
-print(len(rodrigo))
+# print("JUGADOR2",rodrigo)
+# print(len(rodrigo))
+
+b= JuegoDeGuerra()
+b.game_play()
+
+
 
 # O=aux.extraer_carta()
 # print(O)
