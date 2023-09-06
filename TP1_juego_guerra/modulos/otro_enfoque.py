@@ -71,7 +71,15 @@ class JuegoDeGuerra:
       else:
           self.jugador_2.poner_abajo(carta_jugador_1)
           self.jugador_2.poner_abajo(carta_jugador_2)
-
+      #elif valores.index(carta_jugador_1.valores) == valores.index(Carta_jugador_2.valores):
+          #print("-X -X -X -X -X -X")
+          #if valores.index(carta_jugador_1.valores) > valores.index(carta_jugador_2.valores):
+                #self.jugador_1.poner_abajo(carta_jugador_1)
+                #self.jugador_1.poner_abajo(carta_jugador_2)
+          #elif valores.index(carta_jugador_1.valores) < valores.index(carta_jugador_2.valores):
+                #self.jugador_2.poner_abajo(carta_jugador_1)
+                #self.jugador_2.poner_abajo(carta_jugador_2)
+#que pelotudo soy, me dijiste que era con una funcion recursiva jajaajajajaj :(
       print("-------------------------------------")
       print(f"Turno:{self.turno}")
       print("Jugador 1:")
