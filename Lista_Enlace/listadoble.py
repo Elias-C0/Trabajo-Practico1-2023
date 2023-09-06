@@ -130,7 +130,7 @@ class ListaDobleEnlazada:
             nodoIzq= self.cabeza.siguiente
             nodoDer= self.cola
 
-        elif self.tamanio // 2 > primero:
+        elif (self.tamanio // 2) > primero:
             pivote = self.cabeza
             for x in range(primero):
                 pivote= pivote.siguiente
@@ -138,7 +138,7 @@ class ListaDobleEnlazada:
 
         else:
             pivote = self.cola
-            for x in range((self.tamanio - 1) - primero):
+            for x in range(((self.tamanio - 1) - primero)):
                 pivote= pivote.anterior
             nodoIzq= pivote.siguiente
 
