@@ -131,13 +131,13 @@ class ListaDobleEnlazada:
             for x in range(primero):
                 pivote= pivote.siguiente
             nodoIzq = pivote.siguiente
-    
+
         else:
             pivote = self.cola
             for x in range((self.tamanio - 1) - primero):
                 pivote= pivote.anterior
             nodoIzq= pivote.siguiente
-        
+
         if ultimo > (self.tamanio/2):
             nodoDer= self.cola
             for x in range((self.tamanio - 1) - ultimo):
@@ -152,7 +152,7 @@ class ListaDobleEnlazada:
         suceso=False
         marcaIzq= primero + 1
         marcaDer= ultimo
-        
+
         while not suceso:
             while marcaIzq <= marcaDer and nodoIzq.dato <= pivote.dato:
                 nodoIzq= nodoIzq.siguiente
@@ -169,15 +169,16 @@ class ListaDobleEnlazada:
                 aux= nodoIzq.dato
                 nodoIzq.dato= nodoDer.dato
                 nodoDer.dato= aux
-                
+
         temporal= pivote.dato
         pivote.dato= nodoDer.dato
         nodoDer.dato= temporal
 
         return marcaDer
-        
-
+    
     def concatenar(self,lista):
+        if self.cabeza is None or lista is None:
+            raise ValueError("Una lista esta vacia")
         copy2= lista.copiar()
 
         self.cola.siguiente = copy2.cabeza
@@ -197,3 +198,12 @@ class ListaDobleEnlazada:
         while aux:
             yield(aux.dato)
             aux = aux.siguiente
+
+    def __str__(self): #importante para la visualizacion de las cartas en juego de guerra
+        string = ""
+        nodo = self.cabeza
+        while nodo != None:
+            string += str(nodo.dato)
+            string += " "
+            nodo = nodo.siguiente
+        return string
