@@ -56,12 +56,16 @@ class JuegoDeGuerra:
     self.mazo= Mazo()
     self.mazo.barajar()
     self.jugador_1, self.jugador_2 = self.mazo.repartir()
-    self.botin= Mazo()
 
   # def guerra(self):
-  #   pass
-
+  #   self.botin= Mazo()
+  #   for x in range(3):
+  #     carta1= self.jugador_1.sacar_arriba()
+  #     carta2= self.jugador_2.sacar_arriba()
+  #     self.botin.poner_abajo(carta1)
+  #     self.botin.poner_abajo(carta2)
     
+#MOMENTO PENSAR#
     print("Jugador 1:", self.jugador_1.mazo)
     print("Jugador 2:", self.jugador_2.mazo)
 
@@ -72,26 +76,33 @@ class JuegoDeGuerra:
       if (valores.index(carta_jugador_1.valores)+2) > (valores.index(carta_jugador_2.valores)+2):
         self.jugador_1.poner_abajo(carta_jugador_1)
         self.jugador_1.poner_abajo(carta_jugador_2)
-        ganador= "Jugador 1"
+        # ganador= "Jugador 1"
 
       elif (valores.index(carta_jugador_1.valores)+2) < (valores.index(carta_jugador_2.valores)+2):
         self.jugador_2.poner_abajo(carta_jugador_1)
         self.jugador_2.poner_abajo(carta_jugador_2)
-        ganador= "Jugador 2"
+        # ganador= "Jugador 2"
+      
+      # else:
+      #   self.guerra
 
       
-      print("-------------------------------------")
+      print("\n-------------------------------------")
       print(f"Turno: {self.turno}")
+      print("Jugador 1:")
       for x in range(len(self.jugador_1.mazo)):
+        if x % 10 == 0 and x != 0:
+          print() #Este print lo que hace es agregar un salto de línea en la salida de la consola.
         print("-X", end=" ")
       print("\n")
-      print(f"                            {carta_jugador_2}    {carta_jugador_1}\n")
-
+      print(f"         {carta_jugador_2} {carta_jugador_1}\n")
+      print("Jugador 2:")
       for x in range(len(self.jugador_2.mazo)):
-        print("-X", end=" ")
+         if x % 10 == 0 and x != 0:
+           print()
+         print("-X", end=" ")
 
-      print(f"\nel ganador es {ganador}")
-
+      # print(f"\nel ganador es {ganador}")
       self.turno +=1
 
 juego = JuegoDeGuerra()
