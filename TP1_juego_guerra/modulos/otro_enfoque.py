@@ -1,5 +1,6 @@
 from Lista_Enlace.listadoble import ListaDobleEnlazada
 from random import shuffle
+
 valores = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
 palos = ['♠', '♥', '♦', '♣']
 
@@ -48,7 +49,7 @@ class Mazo:
     return self.mazo.extraer(0)
 
 class JuegoDeGuerra:
-  def __init__(self,limite_turnos=10): # es 10000 pero pongo 10 temporalmente
+  def __init__(self,limite_turnos=100): # es 10000 pero pongo 10 temporalmente
     self.turno = 1
     self.max_turnos = limite_turnos
 
@@ -56,54 +57,86 @@ class JuegoDeGuerra:
     self.mazo= Mazo()
     self.mazo.barajar()
     self.jugador_1, self.jugador_2 = self.mazo.repartir()
-
-  # def guerra(self):
-  #   self.botin= Mazo()
-  #   for x in range(3):
-  #     carta1= self.jugador_1.sacar_arriba()
-  #     carta2= self.jugador_2.sacar_arriba()
-  #     self.botin.poner_abajo(carta1)
-  #     self.botin.poner_abajo(carta2)
-    
-#MOMENTO PENSAR#
-    print("Jugador 1:", self.jugador_1.mazo)
-    print("Jugador 2:", self.jugador_2.mazo)
-
     while self.turno < self.max_turnos:
-      carta_jugador_1 = self.jugador_1.sacar_arriba()
-      carta_jugador_2 = self.jugador_2.sacar_arriba()
+        carta_jugador_1 = self.jugador_1.sacar_arriba()
+        carta_jugador_2 = self.jugador_2.sacar_arriba()
+        print("\n-------------------------------------")
+        print(f"Turno: {self.turno}")
+        print("Jugador 1:")
+        for i, carta in enumerate(self.jugador_1.mazo, 1):
+          print("-X ", end=" ")
+          if i % 10 == 0:
+            print()
+        print()
+        print("\n")
+        print(f"         {carta_jugador_2} {carta_jugador_1}\n")
+        print("Jugador 2:")
+        for i, carta in enumerate(self.jugador_2.mazo, 1):
+          print("-X ", end=" ")
+          if i % 10 == 0:
+            print()
+        print()
 
-      if (valores.index(carta_jugador_1.valores)+2) > (valores.index(carta_jugador_2.valores)+2):
+        if (valores.index(carta_jugador_1.valores)+2) > (valores.index(carta_jugador_2.valores)+2):
+          self.jugador_1.poner_abajo(carta_jugador_1)
+          self.jugador_1.poner_abajo(carta_jugador_2)
+          print("\nJugador 1 gana la ronda")
+
+        elif (valores.index(carta_jugador_1.valores)+2) < (valores.index(carta_jugador_2.valores)+2):
+          self.jugador_2.poner_abajo(carta_jugador_1)
+          self.jugador_2.poner_abajo(carta_jugador_2)
+          print("\nJugador 2 gana la ronda")
+
+        else:
+          print("\n-------------------------------------")
+          print("                                      **** Guerra!! ****                                      ")
+          self.guerra()
+
+        self.turno += 1
+
+  def guerra(self):
+     botin= Mazo()
+     for x in range(3):
+       carta1= self.jugador_1.sacar_arriba()
+       carta2= self.jugador_2.sacar_arriba()
+       botin.poner_abajo(carta1)
+       botin.poner_abajo(carta2)
+    
+     carta_jugador_1= self.jugador_1.sacar_arriba()
+     carta_jugador_2= self.jugador_2.sacar_arriba()
+  
+     print("Jugador 1:")
+     for i, carta in enumerate(self.jugador_1.mazo, 1):
+          print("-X ", end=" ")
+          if i % 10 == 0:
+            print()
+     print()
+     print("\n")
+     print(f"         {carta_jugador_2} {carta_jugador_1}\n")
+     print("Jugador 2:")
+     for i, carta in enumerate(self.jugador_2.mazo, 1):
+          print("-X ", end=" ")
+          if i % 10 == 0:
+            print()
+     print()
+     
+
+     if (valores.index(carta_jugador_1.valores)+2) > (valores.index(carta_jugador_2.valores)+2):
         self.jugador_1.poner_abajo(carta_jugador_1)
         self.jugador_1.poner_abajo(carta_jugador_2)
-        # ganador= "Jugador 1"
+        print("\nJugador 1 gana la ronda")
 
-      elif (valores.index(carta_jugador_1.valores)+2) < (valores.index(carta_jugador_2.valores)+2):
+     elif (valores.index(carta_jugador_1.valores)+2) < (valores.index(carta_jugador_2.valores)+2):
         self.jugador_2.poner_abajo(carta_jugador_1)
         self.jugador_2.poner_abajo(carta_jugador_2)
-        # ganador= "Jugador 2"
-      
-      # else:
-      #   self.guerra
+        print("\nJugador 2 gana la ronda")
 
-      
-      print("\n-------------------------------------")
-      print(f"Turno: {self.turno}")
-      print("Jugador 1:")
-      for x in range(len(self.jugador_1.mazo)):
-        if x % 10 == 0 and x != 0:
-          print() #Este print lo que hace es agregar un salto de línea en la salida de la consola.
-        print("-X", end=" ")
-      print("\n")
-      print(f"         {carta_jugador_2} {carta_jugador_1}\n")
-      print("Jugador 2:")
-      for x in range(len(self.jugador_2.mazo)):
-         if x % 10 == 0 and x != 0:
-           print()
-         print("-X", end=" ")
+     else:
+        print("\n-------------------------------------")
+        print("                                      **** Guerra!! ****                                      ")
+        self.guerra()
 
-      # print(f"\nel ganador es {ganador}")
-      self.turno +=1
+     self.turno += 1
 
 juego = JuegoDeGuerra()
 juego.game_play()
