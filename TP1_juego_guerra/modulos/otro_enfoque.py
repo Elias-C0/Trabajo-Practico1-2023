@@ -10,7 +10,7 @@ class Carta:
     self.palos = palos
 
   def __str__(self):
-    return f"{self.valores}{self.palos}"
+    return f"{self.valores}{self.palos}" #Es para mostrar el valor de las cartas
   
 class Mazo:
   def __init__(self):
@@ -30,9 +30,9 @@ class Mazo:
       self.mazo.agregar_al_final(carta) #😆
 
   def repartir(self):
-    jugador_1 = Mazo()
+    jugador_1 = Mazo() #Se le asignan a los jugadores los metodos de Mazo
     jugador_2 = Mazo()
-    for x,carta in enumerate(self.mazo):
+    for x,carta in enumerate(self.mazo): #Se itera sobre el mazo y se reparten las cartas para cada jugador
       if x % 2 == 0:
         jugador_1.poner_arriba(carta)
       else:
@@ -64,7 +64,7 @@ class JuegoDeGuerra:
     self.mazo.barajar()
     self.jugador_1, self.jugador_2 = self.mazo.repartir()
 
-    while self.turno < self.max_turnos:
+    while self.turno <= self.max_turnos:
         carta_jugador_1 = self.jugador_1.sacar_arriba()
         carta_jugador_2 = self.jugador_2.sacar_arriba()
         
@@ -131,7 +131,7 @@ class JuegoDeGuerra:
        elif len(self.jugador_1.mazo) < len(self.jugador_2.mazo):
          print("\n                               ***** jugador 2 gana la partida*****                     ")
        else:
-         self.turno=self.max_turnos +1
+         self.turno= self.max_turnos +1
        return
      
      carta_jugador_1 = self.jugador_1.sacar_arriba()
