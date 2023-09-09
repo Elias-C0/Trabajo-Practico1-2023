@@ -218,5 +218,4 @@ class JuegoDeGuerra:
 juego = JuegoDeGuerra()
 juego.game_play()
 
-
 #falta arreglar la declaracion del ganador
