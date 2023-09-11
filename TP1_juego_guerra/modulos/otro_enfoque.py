@@ -45,7 +45,7 @@ class Mazo:
   def poner_abajo(self, carta):
     self.mazo.agregar_al_final(carta)
 
-  def sacar_arriba(self, jugador):
+  def sacar_arriba(self, jugador=None):
     if not self.mazo.esta_vacia():
         return self.mazo.extraer(0)
     else:
@@ -59,7 +59,7 @@ class Mazo:
     return iter(self.mazo)
 
 class JuegoDeGuerra:
-  def __init__(self,limite_turnos=1000): # es 10000 pero pongo 100 temporalmente
+  def __init__(self,limite_turnos=10000): # es 10000 pero pongo 100 temporalmente
     self.turno = 1
     self.max_turnos = limite_turnos
     self.ganador= None
@@ -257,6 +257,10 @@ class JuegoDeGuerra:
           self.jugador_2.poner_abajo(carta_j1_segunda_guerra)
           self.jugador_2.poner_abajo(carta_j2_segunda_guerra)
           print("\nJugador 2 gana la ronda")
+
+        else:
+          print("ROMPISTE TODO YA QUE ES LA POSIBILIDAD DE QUE PASE 3 GUERRAS SEGUIDAS ES NEGATIVA, LO CUAL ES IMPOSIBLE")
+          exit()
 
      if self.ganador:
         print(f"\n                               ***** {self.ganador} gana la partida *****")
