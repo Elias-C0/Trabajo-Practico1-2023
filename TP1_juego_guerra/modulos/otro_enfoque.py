@@ -59,7 +59,7 @@ class Mazo:
     return iter(self.mazo)
 
 class JuegoDeGuerra:
-  def __init__(self,limite_turnos=10000): # es 10000 pero pongo 100 temporalmente
+  def __init__(self,limite_turnos=1000): # es 10000 pero pongo 100 temporalmente
     self.turno = 1
     self.max_turnos = limite_turnos
     self.ganador= None
