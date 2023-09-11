@@ -74,7 +74,9 @@ class ListaDobleEnlazada:
             actual= self.cabeza
             aux= actual.siguiente
             self.cabeza = aux
-            self.cabeza.anterior= None
+            if self.cabeza is not None:
+                self.cabeza.anterior = None
+
         
         elif posicion == -1 or posicion == self.tamanio -1 or posicion == None:
             actual = self.cola
