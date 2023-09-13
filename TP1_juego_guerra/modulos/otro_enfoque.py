@@ -59,212 +59,144 @@ class Mazo:
     return iter(self.mazo)
 
 class JuegoDeGuerra:
-  def __init__(self,limite_turnos=10000): # es 10000 pero pongo 100 temporalmente
+  def __init__(self, limite_turnos=10000):
     self.turno = 1
     self.max_turnos = limite_turnos
-    self.ganador= None
+    self.ganador = None
+
+  def imprimir_mazo(self,jugador):
+    for x in range(1,len(jugador.mazo)):
+      print("-X ", end=" ")
+      if x % 10 == 0:
+        print()
+    print()
+
+  def jugar_ronda(self):
+    carta_jugador_1 = self.jugador_1.sacar_arriba(1)
+    carta_jugador_2 = self.jugador_2.sacar_arriba(2)
+
+    if carta_jugador_1 is None or carta_jugador_2 is None:
+      if len(self.jugador_1.mazo) > len(self.jugador_2.mazo):
+        self.ganador = "Jugador 1"
+      elif len(self.jugador_2.mazo) > len(self.jugador_1.mazo):
+        self.ganador= "Jugador 2"
+
+    print("\n-------------------------------------")
+    print(f"Turno: {self.turno}")
+    print("Jugador 1:")
+    self.imprimir_mazo(self.jugador_1)
+    print()
+    print(f"         {carta_jugador_1} {carta_jugador_2}\n")
+    print("Jugador 2:")
+    self.imprimir_mazo(self.jugador_2)
+
+    valor_carta_jugador_1 = valores.index(carta_jugador_1.valores) + 2
+    valor_carta_jugador_2 = valores.index(carta_jugador_2.valores) + 2
+
+    if valor_carta_jugador_1 > valor_carta_jugador_2:
+      self.jugador_1.poner_abajo(carta_jugador_1)
+      self.jugador_1.poner_abajo(carta_jugador_2)
+      print("\nJugador 1 gana la ronda")
+
+    elif valor_carta_jugador_1 < valor_carta_jugador_2:
+      self.jugador_2.poner_abajo(carta_jugador_1)
+      self.jugador_2.poner_abajo(carta_jugador_2)
+      print("\nJugador 2 gana la ronda")
+
+    else:
+      print("\n-------------------------------------")
+      print(" " *25, "**** Nuevamente Guerra!! ****")
+      self.jugador_1.poner_arriba(carta_jugador_1)
+      self.jugador_2.poner_arriba(carta_jugador_2)
+      self.guerra()
+
+    self.turno += 1
+  
+  def guerra(self):
+    self.turno +=1
+    botin=Mazo()
+    
+    if len(self.jugador_1.mazo) < 4 or len(self.jugador_2.mazo) < 4:
+      if len(self.jugador_1.mazo) < 4:
+        self.ganador = "Jugador 2"
+        print("El Jugador 1 no tiene suficientes cartas para continuar la guerra")
+      elif len(self.jugador_2.mazo) < 4:
+        self.ganador = "Jugador 1"
+        print("El Jugador 2 no tiene suficientes cartas para continuar la guerra")
+      else:
+        self.turno = self.max_turnos + 1
+
+    carta_jugador_1 = self.jugador_1.sacar_arriba(1)
+    carta_jugador_2 = self.jugador_2.sacar_arriba(2)
+    botin.poner_abajo(carta_jugador_1)
+    botin.poner_abajo(carta_jugador_2)
+
+    for h in range(3):
+      carta1 = self.jugador_1.sacar_arriba(1)
+      carta2 = self.jugador_2.sacar_arriba(2)
+
+      if carta1 is not None:
+        botin.poner_abajo(carta1)
+      else:
+        self.ganador = "Jugador 2"
+        self.turno = self.max_turnos + 1 # sirve para finalizar la partida cuando, en este caso, el jugador 1 no cuenta con mas cartas
+
+      if carta2 is not None:
+        botin.poner_abajo(carta2)
+      else:
+        self.ganador = "Jugador 1"
+        self.turno = self.max_turnos + 1
+
+    carta_jugador_guerra_1 = self.jugador_1.sacar_arriba(1)
+    carta_jugador_guerra_2 = self.jugador_2.sacar_arriba(2)
+
+    print(f"Turno: {self.turno}")
+    print("Jugador 1:")
+    self.imprimir_mazo(self.jugador_1)
+    print()
+    print(f"         {carta_jugador_1} {carta_jugador_2}", end=" ")
+    print("-X " * 6, end="")
+    print(f"{carta_jugador_guerra_1} {carta_jugador_guerra_2}")
+    print("\n")
+    print("Jugador 2:")
+    self.imprimir_mazo(self.jugador_2)
+
+    valor_carta_guerra_1 = valores.index(carta_jugador_guerra_1.valores) + 2
+    valor_carta_guerra_2 = valores.index(carta_jugador_guerra_2.valores) + 2
+
+    if valor_carta_guerra_1 > valor_carta_guerra_2:
+      for x in botin:
+        self.jugador_1.poner_abajo(x)
+      self.jugador_1.poner_abajo(carta_jugador_guerra_1)
+      self.jugador_1.poner_abajo(carta_jugador_guerra_2)
+      print("\nJugador 1 gana la ronda")
+
+    elif valor_carta_guerra_1 < valor_carta_guerra_2:
+      for x in botin:
+        self.jugador_2.poner_abajo(x)
+      self.jugador_2.poner_abajo(carta_jugador_guerra_1)
+      self.jugador_2.poner_abajo(carta_jugador_guerra_2)
+      print("\nJugador 2 gana la ronda")
+
+    else:
+      print("\n-------------------------------------")
+      print(" " * 25, "**** Nuevamente Guerra!! ****")
+      botin.poner_abajo(carta_jugador_guerra_1)
+      botin.poner_abajo(carta_jugador_guerra_2)
 
   def game_play(self):
-    self.mazo= Mazo()
+    self.mazo = Mazo()
     self.mazo.barajar()
     self.jugador_1, self.jugador_2 = self.mazo.repartir()
-    empate= "***** Empate *****"
-    guerra= "**** Guerra!! ****" 
 
     while self.turno <= self.max_turnos:
-        carta_jugador_1 = self.jugador_1.sacar_arriba(1)
-        carta_jugador_2 = self.jugador_2.sacar_arriba(2)
-        
-        if not carta_jugador_1 or not carta_jugador_2:
-            if len(self.jugador_1.mazo) > len(self.jugador_2.mazo):
-              self.ganador= "Jugador 1"
-            elif len(self.jugador_2.mazo) > len(self.jugador_1.mazo):
-              self.ganador= "Jugador 2"
-
-        
-        print("\n-------------------------------------")
-        print(f"Turno: {self.turno}")
-        print("Jugador 1:")
-        for i, carta in enumerate(self.jugador_1.mazo, 1):
-          print("-X ", end=" ")
-          if i % 10 == 0:
-            print()
-        print()
-        print("\n")
-        print(f"         {carta_jugador_1} {carta_jugador_2}\n")
-        print("Jugador 2:")
-        for i, carta in enumerate(self.jugador_2.mazo, 1):
-          print("-X ", end=" ")
-          if i % 10 == 0:
-            print()
-        print()
-
-        if (valores.index(carta_jugador_1.valores)+2) > (valores.index(carta_jugador_2.valores)+2):
-          self.jugador_1.poner_abajo(carta_jugador_1)
-          self.jugador_1.poner_abajo(carta_jugador_2)
-          print("\nJugador 1 gana la ronda")
-
-        elif (valores.index(carta_jugador_1.valores)+2) < (valores.index(carta_jugador_2.valores)+2):
-          self.jugador_2.poner_abajo(carta_jugador_1)
-          self.jugador_2.poner_abajo(carta_jugador_2)
-          print("\nJugador 2 gana la ronda")
-
-        else:
-          print("\n-------------------------------------")
-          print(guerra.center(65))
-          self.jugador_1.poner_arriba(carta_jugador_1)
-          self.jugador_2.poner_arriba(carta_jugador_2)
-          self.guerra()
-
-        self.turno += 1
+      self.jugar_ronda()
 
     if self.ganador:
-        print(f"\n                               ***** {self.ganador} gana la partida *****")
+      print(f"\n                               ***** {self.ganador} gana la partida *****")
     elif self.turno > self.max_turnos:
-        print("Limite alcanzado")
-        print(empate.center(65))
+      print("Limite alcanzado")
+      print(" "*25, "***** Empate *****") 
 
-  def guerra(self):
-     self.turno+=1
-     botin= Mazo()
-     
-     if len(self.jugador_1.mazo) < 4 or len(self.jugador_2.mazo) < 4:
-       if len(self.jugador_1.mazo) < 4:
-        self.ganador= "Jugador 2"
-        print("El Jugador 1 no tiene las suficientes cartas para continuar la guerra")
-        self.turno=self.max_turnos + 1
-        
-       elif len(self.jugador_2.mazo) < 4:
-        self.ganador= "Jugador 1"
-        print("El Jugador 2 no tiene las suficientes cartas para continuar la guerra")
-        self.turno=self.max_turnos + 1
-        
-       else:
-         self.turno= self.max_turnos +1
-       
-     carta_jugador_1 = self.jugador_1.sacar_arriba(1)
-     carta_jugador_2 = self.jugador_2.sacar_arriba(2)
-     botin.poner_abajo(carta_jugador_1)
-     botin.poner_abajo(carta_jugador_2)
-     for x in range(3):
-       carta1= self.jugador_1.sacar_arriba(1)
-       carta2= self.jugador_2.sacar_arriba(2)
-       if carta1 is not None:
-        botin.poner_abajo(carta1)
-       else:
-        self.ganador= "Jugador 2"
-        self.turno=self.max_turnos + 1
-
-       if carta2 is not None:
-        botin.poner_abajo(carta2)
-       else:
-        self.ganador= "Jugador 1"
-        self.turno=self.max_turnos + 1
-
-    
-     carta_jugador_guerra_1= self.jugador_1.sacar_arriba(1)
-     carta_jugador_guerra_2= self.jugador_2.sacar_arriba(2)
-  
-     print(f"Turno: {self.turno}")
-     print("Jugador 1:")
-     for i in range(len(self.jugador_1.mazo), 1):
-          print("-X ", end=" ")
-          if i % 10 == 0:
-            print()
-     print()
-     print("\n")
-     print(f"         {carta_jugador_1} {carta_jugador_2}", end=" ")
-     print("-X " * 6, end="")
-     print(f"{carta_jugador_guerra_1} {carta_jugador_guerra_2}")
-     print("\n")
-     print("Jugador 2:")
-     for i in range(len(self.jugador_2.mazo), 1):
-          print("-X ", end=" ")
-          if i % 10 == 0:
-            print()
-     print()
-
-     if (valores.index(carta_jugador_guerra_1.valores)+2) > (valores.index(carta_jugador_guerra_2.valores)+2):
-        for x in botin:
-          self.jugador_1.poner_abajo(x)
-        self.jugador_1.poner_abajo(carta_jugador_guerra_1)
-        self.jugador_1.poner_abajo(carta_jugador_guerra_2)
-        print("\nJugador 1 gana la ronda")
-
-     elif (valores.index(carta_jugador_guerra_1.valores)+2) < (valores.index(carta_jugador_guerra_2.valores)+2):
-        for x in botin:  
-          self.jugador_2.poner_abajo(x)
-        self.jugador_2.poner_abajo(carta_jugador_guerra_1)
-        self.jugador_2.poner_abajo(carta_jugador_guerra_2)
-        print("\nJugador 2 gana la ronda")
-
-     else:
-        print("\n-------------------------------------")
-        print(" "*25,"**** Nuevamente Guerra!! ****")
-        botin.poner_abajo(carta_jugador_guerra_1)
-        botin.poner_abajo(carta_jugador_guerra_2)
-        for x in range(3):
-          carta1= self.jugador_1.sacar_arriba(1)
-          carta2= self.jugador_2.sacar_arriba(2)
-          if carta1 is not None:
-            botin.poner_abajo(carta1)
-          else:
-            self.ganador= "Jugador 2"
-            print("El Jugador 1 no tiene las suficientes cartas para continuar la guerra")
-            self.turno=self.max_turnos + 1
-            
-          if carta2 is not None:
-            botin.poner_abajo(carta2)
-          else:
-            self.ganador= "Jugador 1"
-            print("El Jugador 2 no tiene las suficientes cartas para continuar la guerra")
-            self.turno=self.max_turnos + 1
-            
-        carta_j1_segunda_guerra= self.jugador_1.sacar_arriba(1)
-        carta_j2_segunda_guerra= self.jugador_2.sacar_arriba(2)
-        print(f"Turno: {self.turno}")
-     
-        print("Jugador 1:")
-        for i in range(len(self.jugador_1.mazo), 1):
-          print("-X ", end=" ")
-          if i % 10 == 0:
-            print()
-        print()
-        print("\n")
-     
-        print(f"         {carta_jugador_1} {carta_jugador_2}", end=" ")
-        print("-X " * 6, end="")
-        print(f"{carta_jugador_guerra_1} {carta_jugador_guerra_2}")
-        print("-X " * 6, end="")
-        print(f"{carta_j1_segunda_guerra} {carta_j2_segunda_guerra}")
-        print("\n")
-        print("Jugador 2:")
-        for i in range(len(self.jugador_2.mazo), 1):
-          print("-X ", end=" ")
-          if i % 10 == 0:
-            print()
-        print()
-
-        if (valores.index(carta_j1_segunda_guerra.valores)+2) > (valores.index(carta_j2_segunda_guerra.valores)+2):
-          for x in botin:
-            self.jugador_1.poner_abajo(x)
-          self.jugador_1.poner_abajo(carta_j1_segunda_guerra)
-          self.jugador_1.poner_abajo(carta_j2_segunda_guerra)
-          print("\nJugador 1 gana la ronda")
-
-        elif (valores.index(carta_j1_segunda_guerra.valores)+2) < (valores.index(carta_j2_segunda_guerra.valores)+2):
-          for x in botin:  
-            self.jugador_2.poner_abajo(x)
-          self.jugador_2.poner_abajo(carta_j1_segunda_guerra)
-          self.jugador_2.poner_abajo(carta_j2_segunda_guerra)
-          print("\nJugador 2 gana la ronda")
-
-     if self.ganador:
-        print(f"\n                               ***** {self.ganador} gana la partida *****")
-     elif self.turno > self.max_turnos:
-        print("Limite alcanzado")
-        print(" "*25,"***** Empate *****")
-
-      
 juego = JuegoDeGuerra()
 juego.game_play()
