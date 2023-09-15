@@ -24,7 +24,7 @@ class Mazo:
   def barajar(self):
     self.generar_mazo()
     cartas_lista = list(self.mazo)
-    shuffle(cartas_lista)
+    shuffle(cartas_lista) #mezclamos las cartas
     self.mazo = ListaDobleEnlazada()
     for carta in cartas_lista:
       self.mazo.agregar_al_final(carta) #😆
@@ -51,7 +51,7 @@ class Mazo:
     else:
         otro_jugador = 1 if jugador == 2 else 2
         self.ganador = otro_jugador
-        print(f"El jugador {jugador} se quedó sin cartas para continuar con la guerra")
+        print(f"El jugador {jugador} se quedó sin cartas para continuar con el juego")
         print(f"\n                               ***** Jugador {otro_jugador} gana la partida *****")
         exit(1)
   
@@ -105,7 +105,7 @@ class JuegoDeGuerra:
 
     else:
       print("\n-------------------------------------")
-      print(" " *25, "**** Nuevamente Guerra!! ****")
+      print(" " *25, "**** Guerra!! ****")
       self.jugador_1.poner_arriba(carta_jugador_1)
       self.jugador_2.poner_arriba(carta_jugador_2)
       self.guerra()
