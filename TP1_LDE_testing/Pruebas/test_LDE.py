@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
 """
-Created on Thu Sep  1 14:00:21 2022
-@author: Catedra de Algoritmos y Estructura de Datos
+Autores: Elias Coradini, Ayrton Milessi
 """
 
-from Lista_Enlace.listadoble import ListaDobleEnlazada
+from TP1_LDE_testing.Modulos.listadoble import ListaDobleEnlazada
 import unittest
 import random
-
 
 class Test_LDE(unittest.TestCase):
     """Test de la clase ListaDobleEnlazada"""

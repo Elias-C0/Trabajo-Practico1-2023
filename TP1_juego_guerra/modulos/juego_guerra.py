@@ -1,4 +1,4 @@
-from Lista_Enlace.listadoble import ListaDobleEnlazada
+from TP1_LDE_testing.Modulos.listadoble import ListaDobleEnlazada
 from random import shuffle
 
 valores = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
@@ -197,6 +197,3 @@ class JuegoDeGuerra:
     elif self.turno > self.max_turnos:
       print("Limite alcanzado")
       print(" "*25, "***** Empate *****") 
-
-juego = JuegoDeGuerra()
-juego.game_play()
