@@ -1,62 +1,60 @@
 import heapq
+import os
+import time
 
-def merge_natural(lista, archivo_salida):
-    bloques = []
+def mezcla_natural(archivo_in, archivo_out, B):
+    # Leer el archivo en bloques de tamaño B
+    with open(archivo_in, 'r') as input:
+        lineas = input.readlines()
 
-    # Dividir la lista en bloques iniciales
-    with open(archivo_salida, "w") as salida:
-        for num in lista:
-            salida.write(str(num) + "\n")
+    num_bloques = len(lineas) // B + (1 if len(lineas) % B != 0 else 0)
 
-    archivo_entrada = archivo_salida
-    bloque_actual = []
-    bloque_anterior = float('-inf')
+    # Ordenar cada bloque y escribirlo a un archivo temporal
+    for i in range(num_bloques):
+        bloque = lineas[i * B:(i + 1) * B]
+        bloque.sort()
 
-    with open(archivo_entrada, "r") as entrada:
-        for linea in entrada:
-            numero = int(linea.strip())
+        with open(f'tmp_bloque_{i}.txt', 'w') as tmp_file:
+            tmp_file.writelines(bloque)
 
-            if numero < bloque_anterior:
-                bloques.append(bloque_actual)
-                bloque_actual = []
+    # Fusionar los bloques ordenados
+    bloques = [open(f'tmp_bloque_{i}.txt', 'r') for i in range(num_bloques)]
+    with open(archivo_out, 'w') as output:
+        merge_bloques(bloques, output)
 
-            bloque_actual.append(numero)
-            bloque_anterior = numero
+    # Cerrar y eliminar archivos temporales
+    for i in range(num_bloques):
+        bloques[i].close()
+        os.remove(f'tmp_bloque_{i}.txt')
 
-    if bloque_actual:
-        bloques.append(bloque_actual)
+def merge_bloques(bloques, output):
+    heap = []
 
-    while len(bloques) > 1:
-        min_heap = [(bloque[0], i, 0) for i, bloque in enumerate(bloques) if bloque]
-        heapq.heapify(min_heap)
+    # Inicializar el montículo con el primer elemento de cada bloque
+    for i, bloque in enumerate(bloques):
+        line = bloque.readline()
+        if line:
+            heapq.heappush(heap, (int(line), i))
 
-        lista_ordenada = []
+    # Fusionar bloques hasta que el montículo esté vacío
+    while heap:
+        val, bloque_idx = heapq.heappop(heap)
+        output.write(f"{val}\n")
 
-        while min_heap:
-            valor, bloque_idx, elemento_idx = heapq.heappop(min_heap)
-            lista_ordenada.append(valor)
-
-            if elemento_idx + 1 < len(bloques[bloque_idx]):
-                siguiente_valor = bloques[bloque_idx][elemento_idx + 1]
-                heapq.heappush(min_heap, (siguiente_valor, bloque_idx, elemento_idx + 1))
-
-        # Escribir los resultados intermedios para la siguiente iteración
-        with open(archivo_entrada, "w") as entrada:
-            for numero in lista_ordenada:
-                entrada.write(str(numero) + "\n")
-
-        bloques = [lista_ordenada]
-
-    # Renombrar el archivo final
-    import os
-    os.rename(archivo_entrada, archivo_salida)
+        next_line = bloques[bloque_idx].readline()
+        if next_line:
+            heapq.heappush(heap, (int(next_line), bloque_idx))
 
 if __name__ == "__main__":
-    archivo_entrada = "datos.txt"  # Reemplaza con el nombre de tu archivo de entrada
-    archivo_salida = "archivo_ordenado.txt"  # Nombre del archivo de salida
+    archivo_in = "datos.txt"  # Reemplaza con el nombre de tu archivo de entrada
+    archivo_out = "archivo_ordenado.txt"  # Nombre del archivo de salida
+    B = 1000000  # Tamaño del bloque
 
-    with open(archivo_entrada, "r") as arch:
-        lista = [int(linea.strip()) for linea in arch]
+    time_start = time.time()  # Registra el tiempo de inicio
+    mezcla_natural(archivo_in, archivo_out, B)
+    time_end = time.time()  # Registra el tiempo de finalización
 
-    merge_natural(lista, archivo_salida)
-    print("Archivo ordenado guardado en", archivo_salida)
+    tiempo_ejec = time_end - time_start  # Calcula el tiempo de ejecución en segundos
+    print("Tiempo de ejecución:", round(tiempo_ejec,3), "segundos")
+    print("Archivo ordenado guardado en", archivo_out) 
+    #hay que cambiar varias cosas,diosnosampare
