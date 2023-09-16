@@ -58,3 +58,5 @@ if __name__ == "__main__":
     print("Tiempo de ejecución:", round(tiempo_ejec,3), "segundos")
     print("Archivo ordenado guardado en", archivo_out) 
     #hay que cambiar varias cosas,diosnosampare
+    #no entendi nada :(
+    #chat gpt explica?
