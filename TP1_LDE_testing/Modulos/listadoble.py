@@ -66,7 +66,7 @@ class ListaDobleEnlazada:
         self.tamanio +=1
 
     def extraer(self,posicion=None):
-        if posicion == 0:
+        if posicion == 0: # Si la posición es 0, se extrae el primer nodo
             actual= self.cabeza
             aux= actual.siguiente
             self.cabeza = aux
@@ -91,38 +91,42 @@ class ListaDobleEnlazada:
 
         else:
             raise ValueError("FUERA DE RANGO")
+        #Se le resta 1 al tamaño de la lista y se devuelve el dato del nodo extraído
         self.tamanio -=1
         return actual.dato
 
     def copiar(self):
-        copia_lista = ListaDobleEnlazada()
-        actual = self.cabeza
+        copia_lista = ListaDobleEnlazada() #Se crea una copia de la lista
+        actual = self.cabeza #Se asigna a actual el comienzo de la lista original
         while actual != None:
             copia_lista.agregar_al_final(actual.dato)
-            actual = actual.siguiente
+            actual = actual.siguiente #Se mueve al siguiente nodo
         return copia_lista
 
     def invertir(self):
+        #Inicializamos dos punteros, uno al final y otro al comienzo.
         final= self.cola
         comienzo= self.cabeza
-        while comienzo != final and comienzo.anterior != final:
-            comienzo.dato,final.dato = final.dato, comienzo.dato
-            final= final.anterior
-            comienzo= comienzo.siguiente
+        while comienzo != final and comienzo.anterior != final: 
+            comienzo.dato,final.dato = final.dato, comienzo.dato #Intercambiamos los datos entre los nodos de comienzo y final.
+            final= final.anterior #Movemos el puntero un nodo hacia atrás
+            comienzo= comienzo.siguiente #Movemos el puntero un nodo hacia delante.
 
     def ordenar(self):
-        if self.cabeza is not None and self.cabeza != self.cola:
-            self.ordenacion_auxiliar(0, self.tamanio-1)
+        if self.cabeza is not None and self.cabeza != self.cola: # Verificamos si la lista no está vacía y si tiene más de un elemento
+            self.ordenacion_auxiliar(0, self.tamanio-1) #Se llama a la función "ordenacion_auxiliar" con los índices del primer y último elemento
         else:
             raise IndexError("Lista carente de contenido")
 
     def ordenacion_auxiliar(self,primero,ultimo):
-        if primero < ultimo:
+        if primero < ultimo: # Comprueba si hay mas de un elemento en el rango especificado
             puntoDivision= self.particion(primero,ultimo)
+            #Se divide la lista y ordena cada mitad
             self.ordenacion_auxiliar(primero, puntoDivision - 1)
             self.ordenacion_auxiliar(puntoDivision + 1 , ultimo)
 
     def particion(self,primero,ultimo):
+        #Aca se establecen los nodos pivote, nodoIzq y nodoDer dependiendo de los índices primero y último
         if primero == 0 and ultimo == self.tamanio -1:
             pivote= self.cabeza
             nodoIzq= self.cabeza.siguiente
@@ -171,7 +175,7 @@ class ListaDobleEnlazada:
                 aux= nodoIzq.dato
                 nodoIzq.dato= nodoDer.dato
                 nodoDer.dato= aux
-
+        #Intercambiamos los datos del pivote y el nodoDer
         temporal= pivote.dato
         pivote.dato= nodoDer.dato
         nodoDer.dato= temporal
@@ -196,9 +200,9 @@ class ListaDobleEnlazada:
         return copia.concatenar(lista)
 
     def __iter__(self):
-        aux = self.cabeza
+        aux = self.cabeza # Se le asigna el primer nodo de la lista.
         while aux:
-            yield(aux.dato)
+            yield(aux.dato) #'yield' se usa para hacer de esta función un generador
             aux = aux.siguiente
 
     def __str__(self): #importante para la visualizacion de las cartas en juego de guerra
