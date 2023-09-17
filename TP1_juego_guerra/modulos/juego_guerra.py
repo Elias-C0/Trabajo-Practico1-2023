@@ -65,10 +65,10 @@ class JuegoDeGuerra:
     self.ganador = None
 
   def imprimir_mazo(self, jugador):
-    for i, carta in enumerate(jugador.mazo):
-        print(carta, end="  ")
-        if (i + 1) % 10 == 0:
-            print()
+    for x in range(len(jugador.mazo)):
+      print("-X ", end=" ")
+      if (x + 1) % 10 == 0:
+        print()
     print()
 
   def jugar_ronda(self):
@@ -203,7 +203,4 @@ class JuegoDeGuerra:
       print(f"\n                               ***** {self.ganador} gana la partida *****")
     elif self.turno > self.max_turnos:
       print("Limite alcanzado")
-      print(" "*25, "***** Empate *****") 
-
-juego= JuegoDeGuerra()
-juego.game_play()
+      print(" "*25, "***** Empate *****")
