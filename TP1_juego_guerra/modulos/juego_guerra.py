@@ -109,20 +109,6 @@ class JuegoDeGuerra:
       print("-X " * 6, end="")
       print(f"{lista_botin[32]} {lista_botin[33]}")
       print("\n")
-    elif len(lista_botin) == 42:
-      print()
-      print(f"         {lista_botin[0]} {lista_botin[1]}", end=" ")
-      print("-X " * 6, end="")
-      print(f"{lista_botin[8]} {lista_botin[9]}")
-      print("-X " * 6, end="")
-      print(f"{lista_botin[16]} {lista_botin[17]}")
-      print("-X " * 6, end="")
-      print(f"{lista_botin[24]} {lista_botin[25]}")
-      print("-X " * 6, end="")
-      print(f"{lista_botin[32]} {lista_botin[33]}")
-      print("-X " * 6, end="")
-      print(f"{lista_botin[40]} {lista_botin[41]}")
-      print("\n")
 
   def jugar_ronda(self):
     carta_jugador_1 = self.jugador_1.sacar_arriba(1) #se extraen las cartas de arriba del mazo de cada jugador
@@ -150,12 +136,10 @@ class JuegoDeGuerra:
     if valor_carta_jugador_1 > valor_carta_jugador_2:
       self.jugador_1.poner_abajo(carta_jugador_1)
       self.jugador_1.poner_abajo(carta_jugador_2)
-      print("\nJugador 1 gana la ronda")
 
     elif valor_carta_jugador_1 < valor_carta_jugador_2:
       self.jugador_2.poner_abajo(carta_jugador_1)
       self.jugador_2.poner_abajo(carta_jugador_2)
-      print("\nJugador 2 gana la ronda")
 
     else:
       print("\n-------------------------------------")
@@ -225,14 +209,11 @@ class JuegoDeGuerra:
         for x in botin:
           self.jugador_1.poner_abajo(x) #guarda todo el botin en el ganador en el orden correspondiete
         hay_guerra= False #cambia el estado para que salga del bucle
-        print("\nJugador 1 gana la ronda")
 
       elif valor_carta_guerra_1 < valor_carta_guerra_2:
         for x in botin:
           self.jugador_2.poner_abajo(x)
-
         hay_guerra= False
-        print("\nJugador 2 gana la ronda")
 
       else:
         print("\n-------------------------------------")
